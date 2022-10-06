@@ -10,6 +10,15 @@
 
     <a href="{{route('posts.create')}}">Go To Create Page</a>
 
+    <br><hr>
+    @foreach($categories as $cat)
+        <a href="{{route('posts.category', $cat->id)}}">{{$cat->name}}</a>
+
+    @endforeach
+
+
+
+
 
     @foreach($posts as $post)
         <a href="{{route('posts.show', $post->id)}}"><h3>{{$post->title}}</h3></a>
