@@ -9,7 +9,7 @@ return new class extends Migration
 
     public function up()
     {
-        Schema::table('posts', function (Blueprint $table) {
+        Schema::table('items', function (Blueprint $table) {
             $table->foreignId('category_id')
                 ->constrained()
                 ->restrictOnDelete();
@@ -19,8 +19,8 @@ return new class extends Migration
 
     public function down()
     {
-        Schema::table('posts', function (Blueprint $table) {
-            $table->dropForeign('posts_category_id_foreign');
+        Schema::table('items', function (Blueprint $table) {
+            $table->dropForeign('items_category_id_foreign');
             $table->dropColumn('category_id');
         });
     }

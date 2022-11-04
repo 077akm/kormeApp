@@ -12,18 +12,18 @@ class CommentController extends Controller
     public function store(Request $request){
         Comment::create([
             'text' => $request->text,
-            'post_id' => $request->post_id,
+            'item_id' => $request->item_id,
         ]);
-        return redirect()->route('posts.show',$request->post_id);
+        return redirect()->route('items.show',$request->item_id);
     }
 
     public function comments(Comment $comment){
         $comment=$comment->comment;
-        return view('posts.show', ['post'=>$comment,'comment'=>$comment,'categories' => Category::all()]);
+        return view('items.show', ['item'=>$comment,'comment'=>$comment,'categories' => Category::all()]);
     }
 
     public function show(Comment $comment){
-        return view('posts.show', ['comment'=>$comment]);
+        return view('items.show', ['comment'=>$comment]);
     }
 
     public function edit(Comment $comment){
@@ -34,11 +34,11 @@ class CommentController extends Controller
         $comment->update([
             'text' => $request->input('text'),
         ]);
-        return redirect()->route('posts.show', $comment->post_id);
+        return redirect()->route('items.show', $comment->item_id);
     }
 
     public function destroy(Comment $comment){
         $comment->delete();
-        return redirect()->route('posts.show', $comment->post_id);
+        return redirect()->route('items.show', $comment->item_id);
     }
 }
