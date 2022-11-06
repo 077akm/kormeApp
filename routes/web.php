@@ -7,7 +7,9 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Auth2\RegisterController;
 use App\Http\Controllers\Auth2\LoginController;
 use App\Http\Controllers\Adm\UserController;
-
+use App\Http\Controllers\Adm\ItemderController;
+use App\Http\Controllers\Adm\CommentterController;
+use App\Http\Controllers\Adm\CategoryController;
 Route::get('/', function (){
     return redirect()->route('items.index');
 });
@@ -20,14 +22,18 @@ Route::middleware('auth')->group(function (){
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::resource('comments', CommentController::class)->except('show');
 
-    Route::prefix('adm')->as('adm.')->middleware('hasrole:admin')->group(function (){
+    Route::prefix('adm')->as('adm.')->middleware('hasrole:admin,moderator')->group(function (){
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
         Route::get('/users/search', [UserController::class, 'index'])->name('users.search');
-        Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
         Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
         Route::put('/users/{user}/ban', [UserController::class, 'ban'])->name('users.ban');
         Route::put('/users/{user}/unban', [UserController::class, 'unban'])->name('users.unban');
-        Route::put('/users/{user}/edrole', [UserController::class, 'edrole'])->name('users.edrole');
+        Route::get('/users/{user}/edrole', [UserController::class, 'edrole'])->name('users.edrole');
+
+        Route::get('/items', [ItemderController::class, 'showItems'])->name('items');
+        Route::get('/comments', [CommentterController::class, 'showComments'])->name('comments');
+
+        Route::get('/categories', [CategoryController::class, 'showCategory'])->name('categories');
     });
 });
 

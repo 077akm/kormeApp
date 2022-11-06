@@ -50,7 +50,7 @@
                 <div class="col-sm-10">
 
                     @if($item->id == $comment->item_id)
-                        {{$comment->created_at}}<h4>{{$comment->text}}</h4>
+                        {{$comment->created_at}} | {{$comment->user->name}}<h4>{{$comment->text}}</h4>
                 </div>
                 <div class="col-sm-2">
                         <div class=" d-flex" style="align: right;">

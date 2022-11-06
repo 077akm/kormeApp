@@ -113,8 +113,9 @@
                             </div>
                         </div>
                     </div>
-                    <a href="index.html">
-                        <img class="img-fluid" src="assets/images/logo.png" alt="Theme-Logo" />
+                    <a href="">
+                        <img class="img-fluid" src="{{asset('assets/images/favicon.ico')}}" alt="Theme-Logo" />
+
                     </a>
                     <a class="mobile-options waves-effect waves-light">
                         <i class="ti-more"></i>
@@ -151,9 +152,10 @@
 
                             </ul>
                         </li>
+
                         <li class="user-profile header-notification">
                             <a href="#!" class="waves-effect waves-light">
-                                <img src="assets/images/avatar-4.jpg" class="img-radius">
+                                <img src="https://thumbs.dreamstime.com/b/%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8C-%D1%81%D0%BC%D0%B8-%D0%B2%D0%B5%D0%BA%D1%82%D0%BE%D1%80%D0%B0-%D0%B7%D0%BD%D0%B0%D1%87%D0%BA%D0%B0-%D0%BF%D1%80%D0%BE%D1%84%D0%B8%D0%BB%D1%8F-%D0%B0%D0%B2%D0%B0%D1%82%D0%B0%D1%80%D1%8B-%D0%BF%D0%BE-%D1%83%D0%BC%D0%BE%D0%BB%D1%87%D0%B0%D0%BD%D0%B8%D1%8E-176256935.jpg" class="img-radius">
                                 <span>{{Auth::user()->name}}</span>
                                 <i class="ti-angle-down"></i>
                             </a>
@@ -178,11 +180,19 @@
                                         <i class="ti-lock"></i> Lock Screen
                                     </a>
                                 </li>
+
                                 <li class="waves-effect waves-light">
-                                    <a href="auth-normal-sign-in.html">
-                                        <i class="ti-layout-sidebar-left"></i> Logout
+                                    <a href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                        <i class="ti-layout-sidebar-left"></i>
                                     </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
                                 </li>
+
                             </ul>
                         </li>
                     </ul>
@@ -197,7 +207,7 @@
                     <div class="pcoded-inner-navbar main-menu">
                         <div class="">
                             <div class="main-menu-header">
-                                <img class="img-80 img-radius" src="assets/images/avatar-4.jpg">
+                                <img class="img-80 img-radius" src="https://thumbs.dreamstime.com/b/%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8C-%D1%81%D0%BC%D0%B8-%D0%B2%D0%B5%D0%BA%D1%82%D0%BE%D1%80%D0%B0-%D0%B7%D0%BD%D0%B0%D1%87%D0%BA%D0%B0-%D0%BF%D1%80%D0%BE%D1%84%D0%B8%D0%BB%D1%8F-%D0%B0%D0%B2%D0%B0%D1%82%D0%B0%D1%80%D1%8B-%D0%BF%D0%BE-%D1%83%D0%BC%D0%BE%D0%BB%D1%87%D0%B0%D0%BD%D0%B8%D1%8E-176256935.jpg">
                                 <div class="user-details">
                                     <span id="more-details">{{Auth::user()->name}}<i class="fa fa-caret-down"></i></span>
                                 </div>
@@ -208,7 +218,13 @@
                                     <li class="more-details">
                                         <a href="user-profile.html"><i class="ti-user"></i>View Profile</a>
                                         <a href="#!"><i class="ti-settings"></i>Settings</a>
-                                        <a href="auth-normal-sign-in.html"><i class="ti-layout-sidebar-left"></i>Logout</a>
+                                        <a href="{{ route('logout') }}"><i class="ti-layout-sidebar-left"
+                                                                           onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                                {{ __('Logout') }}</i></a>
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                            @csrf
+                                        </form>
                                     </li>
                                 </ul>
                             </div>
@@ -233,23 +249,17 @@
                                 </a>
                                 <ul class="pcoded-submenu">
                                     <li class=" ">
-                                        <a href="" class="waves-effect waves-dark">
+                                        <a href="{{route('adm.users.index')}}" class="waves-effect waves-dark">
                                             <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                             <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">User Controller</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
+
                                     <li class=" ">
-                                        <a href="notification.html" class="waves-effect waves-dark">
+                                        <a href="{{route('adm.comments')}}" class="waves-effect waves-dark">
                                             <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Notification</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>
-                                    <li class=" ">
-                                        <a href="icon-themify.html" class="waves-effect waves-dark">
-                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">Themify</span>
+                                            <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">Comments Controller</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
@@ -257,38 +267,20 @@
                                 </ul>
                             </li>
                         </ul>
-                        <div class="pcoded-navigation-label" data-i18n="nav.category.forms">Forms &amp; Tables</div>
-                        <ul class="pcoded-item pcoded-left-item">
-                            <li>
-                                <a href="form-elements-component.html" class="waves-effect waves-dark">
-                                    <span class="pcoded-micon"><i class="ti-layers"></i><b>FC</b></span>
-                                    <span class="pcoded-mtext" data-i18n="nav.form-components.main">Form Components</span>
-                                    <span class="pcoded-mcaret"></span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="bs-basic-table.html" class="waves-effect waves-dark">
-                                    <span class="pcoded-micon"><i class="ti-layers"></i><b>FC</b></span>
-                                    <span class="pcoded-mtext" data-i18n="nav.form-components.main">Basic Table</span>
-                                    <span class="pcoded-mcaret"></span>
-                                </a>
-                            </li>
-
-                        </ul>
 
                         <div class="pcoded-navigation-label" data-i18n="nav.category.forms">Chart &amp; Maps</div>
                         <ul class="pcoded-item pcoded-left-item">
                             <li>
-                                <a href="chart.html" class="waves-effect waves-dark">
+                                <a href="{{route('adm.items')}}" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="ti-layers"></i><b>FC</b></span>
-                                    <span class="pcoded-mtext" data-i18n="nav.form-components.main">Chart</span>
+                                    <span class="pcoded-mtext" data-i18n="nav.form-components.main">Items Controller</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
                             <li>
-                                <a href="map-google.html" class="waves-effect waves-dark">
+                                <a href="{{route('adm.categories')}}" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="ti-layers"></i><b>FC</b></span>
-                                    <span class="pcoded-mtext" data-i18n="nav.form-components.main">Maps</span>
+                                    <span class="pcoded-mtext" data-i18n="nav.form-components.main">Categories</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>

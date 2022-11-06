@@ -19,7 +19,7 @@
             <th scope="col">Name</th>
             <th scope="col">Email</th>
             <th scope="col">Role</th>
-            <th>#</th>
+            <th scope="col"><Active>    </Active></th>
             <th>#</th>
         </tr>
         </thead>
@@ -50,18 +50,9 @@
                 </form>
             </td>
             <td>
-                <form action="@if($users[$i]->role_id)
-                    {{route('adm.users.edrole', $users[$i]->id)}}
-                    @endif
-                    " method="post">
+                <form action="{{route('adm.users.edrole', $users[$i]->id)}}" method="get">
                     @csrf
-                    @method('PUT')
-                    <select class="form-control">
-                        @foreach($users as $us)
-                            <option @if($us->id == $users[$i]->id) selected @endif value="{{$us->id}}">{{$us->role->name}}</option>
-                        @endforeach
-                    </select>
-
+                    <button class="btn btn-outline-dark" >Edit</button>
                 </form>
             </td>
         </tr>
