@@ -10,7 +10,7 @@
             <div class="col-md-10">
                     <a class="btn btn-outline-primary" href="{{route('items.index')}}">Go To Index</a>
 
-                <form action="{{route('items.store')}}" method="post">
+                <form action="{{route('items.store')}}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <label for="nameInput">Product Name</label>
@@ -18,14 +18,6 @@
                             @error('name')
                                 <div class="alert alert-danger">{{$message}}</div>
                             @enderror
-                    </div>
-
-                    <div class="form-group">
-                        <label for="imageInput">Image URL</label>
-                        <input type="text" class="form-control" id="imageInput" name="image" placeholder="Please Your URL">
-                        @error('image')
-                        <div class="alert alert-danger">{{$message}}</div>
-                        @enderror
                     </div>
 
                     <div class="form-group">
@@ -68,6 +60,15 @@
                             <div class="alert alert-danger">{{$message}}</div>
                         @enderror
                     </div>
+
+                    <div class="form-group">
+                        <label for="imageInput">Image URL</label>
+                        <input type="file" class="form-control @error('image') is-invalid @enderror" id="imageInput" name="image">
+                        @error('image')
+                        <div class="alert alert-danger">{{$message}}</div>
+                        @enderror
+                    </div>
+
                     <div class="form-group mt-3">
                         <button class="btn btn-outline-success" type="submit">Save Post</button>
                     </div>

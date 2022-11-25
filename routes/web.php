@@ -10,6 +10,9 @@ use App\Http\Controllers\Adm\UserController;
 use App\Http\Controllers\Adm\ItemderController;
 use App\Http\Controllers\Adm\CommentterController;
 use App\Http\Controllers\Adm\CategoryController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\Adm\OrderController;
+
 Route::get('/', function (){
     return redirect()->route('items.index');
 });
@@ -21,6 +24,16 @@ Route::middleware('auth')->group(function (){
     Route::resource('items', ItemController::class)->except('index', 'show');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::resource('comments', CommentController::class)->except('show');
+    Route::post('/items/{item}/rate', [ItemController::class, 'rate'])->name('items.rate');
+    Route::post('/items/{item}/unrate', [ItemController::class, 'unrate'])->name('items.unrate');
+
+    Route::post('/items/{item}/carting', [ItemController::class, 'carting'])->name('items.carting');
+    Route::post('/items/{item}/uncarting', [ItemController::class, 'uncarting'])->name('items.uncarting');
+    Route::get('/shoping', [ItemController::class, 'shoping'])->name('shoping.index');
+
+    Route::post('/items/{item}/addkol', [ItemController::class, 'addkol'])->name('items.addkol');
+    Route::post('/items/{item}/unaddkol', [ItemController::class, 'unaddkol'])->name('items.unaddkol');
+    Route::post('/cart', [CartController::class, 'buy'])->name('cart.buy');
 
     Route::prefix('adm')->as('adm.')->middleware('hasrole:admin,moderator')->group(function (){
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
@@ -33,12 +46,16 @@ Route::middleware('auth')->group(function (){
         Route::get('/items', [ItemderController::class, 'showItems'])->name('items');
         Route::get('/comments', [CommentterController::class, 'showComments'])->name('comments');
 
+        Route::get('/cart', [OrderController::class, 'cart'])->name('cart.index');
+        Route::put('/cart/{cart}/confirm', [OrderController::class, 'confirm'])->name('cart.confirm');
+
         Route::get('/categories', [CategoryController::class, 'showCategory'])->name('categories');
     });
 });
 
+Route::get('/items/search', [ItemController::class, 'index'])->name('items.search');
 Route::resource('items', ItemController::class)->only('index', 'show');
-Route::get('/items/category/{category}', [ItemController::class, 'itemsByCategory'])->name('items.category')->middleware('hasrole:moderator');
+Route::get('/items/category/{category}', [ItemController::class, 'itemsByCategory'])->name('items.category')/*->middleware('hasrole:moderator')*/;
 Route::get('/items/condition/{condition}', [ItemController::class, 'itemsByCondition'])->name('items.condition');
 //Auth::routes();
 

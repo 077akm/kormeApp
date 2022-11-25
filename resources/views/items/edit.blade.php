@@ -16,7 +16,7 @@
             </div>
             <div class="form-group">
                 <label>Image URL</label>
-                <input type="text" class="form-control" name="image" value="{{$item->image}}">
+                <input type="file" class="form-control" name="image" value="{{$item->image}}">
             </div>
             <div class="form-group">
                 <label>Content </label>

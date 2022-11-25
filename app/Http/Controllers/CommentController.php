@@ -5,16 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use mysql_xdevapi\CollectionModify;
 
 class CommentController extends Controller
 {
     public function store(Request $request){
-        Comment::create([
-            'text' => $request->text,
-            'item_id' => $request->item_id,
+        $validated = $request->validate([
+            'text' => 'required',
+            'item_id' => 'required|numeric',
         ]);
-        return redirect()->route('items.show',$request->item_id);
+        Auth::user()->comments()->create($validated);
+        return back();
     }
 
     public function comments(Comment $comment){

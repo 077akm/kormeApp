@@ -3,5 +3,5 @@
 @section('title', 'No perm')
 
 @section('content')
-    <h1>No perm</h1>
+    <h1>Your Status Simple)))))</h1>
 @endsection

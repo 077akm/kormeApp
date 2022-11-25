@@ -22,7 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role_id',
-        'is_active'
+        'is_active',
     ];
 
     /**
@@ -47,6 +47,18 @@ class User extends Authenticatable
     public function items(){
         return $this->hasMany(Item::class);
     }
+    public function itemsRated(){
+        return $this->belongsToMany(Item::class)
+            ->withPivot('rating')
+            ->withTimestamps();
+    }
+    public function itemsQuant($iscart){
+        return $this->belongsToMany(Item::class,'item_type')
+            ->wherePivot('iscart', $iscart)
+            ->withPivot('quantity', 'iscart', 'kol')
+            ->withTimestamps();
+    }
+
 
     public function comments(){
         return $this->hasMany(Comment::class);

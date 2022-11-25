@@ -8,7 +8,7 @@
             <div class="card mb-3" style="max-width: 1500px;">
                 <div class="row g-0">
                     <div class="col-md-6">
-                        <img src="{{$item->image}}" class="img-fluid rounded-start">
+                        <img src="{{asset($item->image)}}" class="img-fluid rounded-start">
                     </div>
                     <div class="col-md-6">
                         <div class="card-body">
@@ -19,11 +19,53 @@
                                 @endforeach</p><br>
 
                             <label>ЦЕНА:</label>
-                            <h3 class="display-7"><span class="badge bg-success">{{$item->price}} KZT</span></h3><br>
+                            <h3 class="display-7"><span class="badge bg-success">{{$item->price}} ₸</span></h3><br>
 
-                            <a class="btn btn-outline-secondary" href="{{route('items.edit', $item->id)}}">Edit</a>
-                            <button class="btn btn-dark">BUY</button>
+                            <div class="d-flex">
+                            <a class="btn btn-outline-secondary" href="{{route('items.edit', $item->id)}}" style="margin-right: 5px">Edit</a>
+
+
+
+                            <form action="{{route('items.carting', $item->id)}}" method="post">
+                            @csrf
+                                <button class="btn btn-dark" type="submit">
+                                    Buy
+                                </button>
+                            </form>
+                            </div>
+
+
                             <hr>
+                            @auth
+                                <div class="container">
+                                    <form action="{{route('items.rate',$item->id)}}" method="post">
+                                        @csrf
+                                        <div class="rating">
+                                            @for($i=5; $i>=1;$i--)
+                                                <input type="radio" name="rating" id="{{$i}}" {{$myRating==$i ? 'checked' : ''}} value="{{$i}}">
+                                                <label for="{{$i}}"></label>
+                                            @endfor
+                                        </div><br><br><br><br>
+                                        <button class="btn btn-dark" type="submit">Rate</button>
+                                    </form>
+
+                                    <form action="{{route('items.unrate', $item->id)}}" method="post">
+                                        @csrf
+                                        <button class="btn btn-outline-dark mt-1" type="submit">UnRate</button>
+                                    </form>
+
+                                </div>
+                                <hr>
+                            @endauth
+                            @if($avgRating != 0)
+                                <h3>Rating: {{$avgRating}}</h3>
+                                <hr>
+                            @endif
+
+
+
+
+
                         </div>
                     </div>
                 </div>

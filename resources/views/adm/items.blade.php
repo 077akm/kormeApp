@@ -1,6 +1,6 @@
 @extends('layouts.adm')
 
-@section('title', 'No perm')
+@section('title', 'Items PAGE')
 
 @section('content')
     <h1>ITEMS PAGE</h1>

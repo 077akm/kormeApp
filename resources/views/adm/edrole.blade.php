@@ -11,8 +11,10 @@
                     @csrf
                     @method("PUT")
 
-                    <p class="card-text">User: {{$user->name}}</p>
-                    <small>Email: {{$user->email}}</small>
+
+                        <label class="card-text display-5">User: {{$user->name}}</label><br>
+
+                    <label class="display-5">Email: {{$user->email}}</label>
                     <div class="form-group">
                         <label for="roleInput">Role</label>
                         <select class="form-control" name="role_id">
@@ -22,7 +24,7 @@
                         </select>
                     </div>
                     <div class="form-group mb-3">
-                        <button class="btn-success" type="submit">Update</button>
+                        <button class="form-control btn-success" type="submit">Update</button>
                     </div>
                 </form>
             </div>

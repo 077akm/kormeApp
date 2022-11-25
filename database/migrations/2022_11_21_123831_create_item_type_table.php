@@ -13,14 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('items', function (Blueprint $table) {
+        Schema::create('item_type', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->integer('price');
-            $table->string('condition');
-            $table->text('content');
-            $table->foreignId('user_id')->nullable()->constrained();
-
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('item_id')->constrained();
+            $table->boolean('kol')->default(true);
+            $table->string('iscart');
+            $table->integer('quantity');
             $table->timestamps();
         });
     }
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('items');
+        Schema::dropIfExists('item_type');
     }
 };

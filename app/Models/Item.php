@@ -27,4 +27,16 @@ class Item extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+    public function usersRated(){
+        return $this->belongsToMany(User::class)
+            ->withPivot('rating')
+            ->withTimestamps();
+    }
+    public function usersQuant(){
+        return $this->belongsToMany(User::class,'item_type')
+            ->withPivot('quantity','iscart')
+            ->withTimestamps();
+    }
+
+
 }
