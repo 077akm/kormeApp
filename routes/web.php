@@ -12,18 +12,21 @@ use App\Http\Controllers\Adm\CommentterController;
 use App\Http\Controllers\Adm\CategoryController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\Adm\OrderController;
+use App\Http\Controllers\LangController;
+use App\Http\Controllers\WalletController;
 
 Route::get('/', function (){
     return redirect()->route('items.index');
 });
 
 
-
+Route::get('lang/{lang}/', [LangController::class, 'switchLang'])->name('switch.lang');
 
 Route::middleware('auth')->group(function (){
     Route::resource('items', ItemController::class)->except('index', 'show');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::resource('comments', CommentController::class)->except('show');
+
     Route::post('/items/{item}/rate', [ItemController::class, 'rate'])->name('items.rate');
     Route::post('/items/{item}/unrate', [ItemController::class, 'unrate'])->name('items.unrate');
 
@@ -33,9 +36,13 @@ Route::middleware('auth')->group(function (){
 
     Route::post('/items/{item}/addkol', [ItemController::class, 'addkol'])->name('items.addkol');
     Route::post('/items/{item}/unaddkol', [ItemController::class, 'unaddkol'])->name('items.unaddkol');
-    Route::post('/cart', [CartController::class, 'buy'])->name('cart.buy');
+    Route::post('/cart/{user}', [CartController::class, 'buy'])->name('cart.buy');
 
-    Route::prefix('adm')->as('adm.')->middleware('hasrole:admin,moderator')->group(function (){
+    Route::get('/items/payshow', [WalletController::class, 'index'])->name('items.payshow');
+    Route::post('/items/{user}/addmon', [WalletController::class, 'addmon'])->name('items.addmon');
+    Route::get('/items/lang', [LangController::class, 'langbet'])->name('items.langbet');
+
+    Route::prefix('adm')->as('adm.')->middleware('hasrole:admin')->group(function (){
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
         Route::get('/users/search', [UserController::class, 'index'])->name('users.search');
         Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
@@ -44,15 +51,22 @@ Route::middleware('auth')->group(function (){
         Route::get('/users/{user}/edrole', [UserController::class, 'edrole'])->name('users.edrole');
 
         Route::get('/items', [ItemderController::class, 'showItems'])->name('items');
-        Route::get('/comments', [CommentterController::class, 'showComments'])->name('comments');
+
 
         Route::get('/cart', [OrderController::class, 'cart'])->name('cart.index');
         Route::put('/cart/{cart}/confirm', [OrderController::class, 'confirm'])->name('cart.confirm');
+    });
 
-        Route::get('/categories', [CategoryController::class, 'showCategory'])->name('categories');
+    Route::prefix('adm')->as('adm.')->middleware('hasrole:moderator')->group(function (){
+        Route::get('/categories/index', [CategoryController::class, 'showCategory'])->name('categories.index');
+        Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
+        Route::post('/categories/store', [CategoryController::class, 'store'])->name('categories.store');
+        Route::delete('/categories/{category}/destroy', [CategoryController::class, 'destroy'])->name('categories.destroy');
+        Route::get('/comments', [CommentterController::class, 'showComments'])->name('comments');
     });
 });
 
+Route::get('/items/profile', [ItemController::class, 'profile'])->name('items.profile');
 Route::get('/items/search', [ItemController::class, 'index'])->name('items.search');
 Route::resource('items', ItemController::class)->only('index', 'show');
 Route::get('/items/category/{category}', [ItemController::class, 'itemsByCategory'])->name('items.category')/*->middleware('hasrole:moderator')*/;

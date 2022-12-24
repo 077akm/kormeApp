@@ -23,6 +23,8 @@ class User extends Authenticatable
         'password',
         'role_id',
         'is_active',
+        'avatar',
+        'balance'
     ];
 
     /**
@@ -55,7 +57,7 @@ class User extends Authenticatable
     public function itemsQuant($iscart){
         return $this->belongsToMany(Item::class,'item_type')
             ->wherePivot('iscart', $iscart)
-            ->withPivot('quantity', 'iscart', 'kol')
+            ->withPivot('quantity', 'iscart', 'kol', 'sum')
             ->withTimestamps();
     }
 

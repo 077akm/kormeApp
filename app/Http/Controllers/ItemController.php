@@ -11,6 +11,19 @@ use Illuminate\Support\Facades\Auth;
 class ItemController extends Controller
 {
 
+    public function profile(Item $item){
+        $items = Item::where('user_id', Auth::user()->id)->get();
+        $ids = Auth::user()->itemsQuant("Confirmed")->get();
+        $kol = 0;
+        if (Auth::check()) {
+            $itemshop = Auth::user()->itemsQuant("in_cart")->get();
+            foreach ($itemshop as $its) {
+                $kol += $its->pivot->kol;
+            }
+        }
+        return view('items.profile', ['items'=>$items,'kol'=>$kol, 'ids'=>$ids]);
+    }
+
     public function rate(Request $request, Item $item){
         $request->validate([
             'rating' => 'required|min:1|max:5'
@@ -88,7 +101,7 @@ class ItemController extends Controller
         $image_path = $req->file('image')->storeAs('items', $fileName, 'public');
         $validated['image'] = '/storage/'.$image_path;
         Auth::user()->items()->create($validated);
-        return redirect()->route('items.index')->with('message', 'Item saqtaldy!    ');
+        return redirect()->route('items.index')->with('message', __('error.itmstr'));
     }
 
 
@@ -129,15 +142,19 @@ class ItemController extends Controller
 
     public function update(Request $request, Item $item)
     {
+        $fileName = time().$request->file('image')->getClientOriginalName();
+        $image_path = $request->file('image')->storeAs('items', $fileName, 'public');
+
         $item->update([
             'name' => $request->input('name'),
-            'image' => $request->input('image'),
+            'image' => '/storage/'.$image_path,
             'price' => $request->input('price'),
             'condition' => $request->input('condition'),
             'content' => $request->input('content'),
             'category_id' => $request->input('category_id'),
         ]);
-        return redirect()->route('items.index')->with('message', 'Item update!    ');
+        $this->authorize('update', $item);
+        return redirect()->route('items.index')->with('message', __('error.itmupd'));
     }
 
 
@@ -145,7 +162,7 @@ class ItemController extends Controller
     {
         $this->authorize('delete', $item);
         $item->delete();
-        return redirect()->route('items.index');
+        return redirect()->route('items.index')->with('message', __('error.itmdstr'));
     }
 
     public function addkol(Item $item){
@@ -159,8 +176,11 @@ class ItemController extends Controller
     public function unaddkol(Item $item){
         $itemKol = Auth::user()->itemsQuant("in_cart")->where('item_id', $item->id)->get();
         foreach ($itemKol as $ikol)
-            if ($ikol != null) {
+            if ($ikol->pivot->quantity != 1) {
                 Auth::user()->itemsQuant("in_cart")->updateExistingPivot($item->id, ['quantity' => $ikol->pivot->quantity-1]);
+            }else{
+                Auth::user()->itemsQuant("in_cart")->detach($item->id);
+                $item->usersQuant()->detach();
             }
         return back();
     }
@@ -176,8 +196,9 @@ class ItemController extends Controller
             Auth::user()->itemsQuant("in_cart")->attach($item->id, ['iscart' => "in_cart",'quantity' => 1]);
         }
 
-        return back()->with('message', 'Item saqtaldy!');
+        return back()->with('message', __('error.carting'));
     }
+
     public function uncarting(Item $item){
         $itemUncarted = Auth::user()->itemsQuant("in_cart")->where('item_id', $item->id)->first();
 
@@ -185,7 +206,7 @@ class ItemController extends Controller
             Auth::user()->itemsQuant("in_cart")->detach($item->id);
             $item->usersQuant()->detach();
         }
-        return back();
+        return back()->with('massage', __('error.uncarting'));
     }
 
     public function shoping(){
@@ -203,8 +224,10 @@ class ItemController extends Controller
             $bonus = 15000;
         }elseif ($sum > 10000){
             $bonus = 5000;
-        }else{
+        }elseif ($sum > 5000){
             $bonus = 1000;
+        }else{
+            $bonus = 0;
         }
 
         return view('items.shoppingcarts', ['itemshop' => $itemshop,'kol'=>$kol,'bonus'=>$bonus,'sum'=>$sum,'conditions' => Condition::all()]);

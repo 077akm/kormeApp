@@ -16,7 +16,7 @@ class CommentController extends Controller
             'item_id' => 'required|numeric',
         ]);
         Auth::user()->comments()->create($validated);
-        return back();
+        return back()->with('message', __('error.cmmstr'));
     }
 
     public function comments(Comment $comment){
@@ -36,11 +36,11 @@ class CommentController extends Controller
         $comment->update([
             'text' => $request->input('text'),
         ]);
-        return redirect()->route('items.show', $comment->item_id);
+        return redirect()->route('items.show', $comment->item_id)->with('message', __('error.cmmupd'));
     }
 
     public function destroy(Comment $comment){
         $comment->delete();
-        return redirect()->route('items.show', $comment->item_id);
+        return redirect()->route('items.show', $comment->item_id)->with('message', __('error.cmmdstr'));
     }
 }

@@ -7,12 +7,14 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10">
+                <div class="card mt-5">
+                    <div class="card-body">
                 <form action="{{route('adm.users.update', $user->id)}}" method="POST">
                     @csrf
                     @method("PUT")
 
 
-                        <label class="card-text display-5">User: {{$user->name}}</label><br>
+                        <label class="display-5">User: {{$user->name}}</label><br>
 
                     <label class="display-5">Email: {{$user->email}}</label>
                     <div class="form-group">
@@ -27,6 +29,8 @@
                         <button class="form-control btn-success" type="submit">Update</button>
                     </div>
                 </form>
+                </div>
+                </div>
             </div>
         </div>
     </div>

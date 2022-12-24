@@ -12,24 +12,29 @@
                     </div>
                     <div class="col-md-6">
                         <div class="card-body">
-                            <h2 class="card-title display-5">{{$item->name}}</h2><br>
+                            <h2 class="card-title display-5">{{$item->name}}</h2>
+                            @if($avgRating != 0)
+                                <h5>{{__('bet.rating')}}: {{$avgRating}}</h5>
+                                <hr>
+                            @endif
                             <h5><p class="card-text">{{$item->content}}</p></h5><br>
                             <p class="card-text">@foreach($conditions as $con)
-                                    <span class="badge bg-danger" @if($con->id == $item->condition)>{{$con->name}} @endif</span>
+                                    <span class="badge bg-danger" @if($con->id == $item->condition)>{{$con->{'cond_'.app()->getLocale()} }} @endif</span>
                                 @endforeach</p><br>
 
-                            <label>ЦЕНА:</label>
+                            <label>{{__('bet.price')}}:</label>
                             <h3 class="display-7"><span class="badge bg-success">{{$item->price}} ₸</span></h3><br>
 
                             <div class="d-flex">
-                            <a class="btn btn-outline-secondary" href="{{route('items.edit', $item->id)}}" style="margin-right: 5px">Edit</a>
-
+                                @auth
+                            <a class="btn btn-outline-secondary" href="{{route('items.edit', $item->id)}}" style="margin-right: 5px">{{__('bet.edit')}}</a>
+                                @endif
 
 
                             <form action="{{route('items.carting', $item->id)}}" method="post">
                             @csrf
                                 <button class="btn btn-dark" type="submit">
-                                    Buy
+                                    {{__('bet.buy')}}
                                 </button>
                             </form>
                             </div>
@@ -46,21 +51,18 @@
                                                 <label for="{{$i}}"></label>
                                             @endfor
                                         </div><br><br><br><br>
-                                        <button class="btn btn-dark" type="submit">Rate</button>
+                                        <button class="btn btn-dark" type="submit">{{__('bet.confirm')}}</button>
                                     </form>
 
                                     <form action="{{route('items.unrate', $item->id)}}" method="post">
                                         @csrf
-                                        <button class="btn btn-outline-dark mt-1" type="submit">UnRate</button>
+                                        <button class="btn btn-outline-dark mt-1" type="submit">{{__('bet.remove')}}</button>
                                     </form>
 
                                 </div>
                                 <hr>
                             @endauth
-                            @if($avgRating != 0)
-                                <h3>Rating: {{$avgRating}}</h3>
-                                <hr>
-                            @endif
+
 
 
 
@@ -79,11 +81,11 @@
         <div class="container">
             <form action="{{route('comments.store')}}" method="post">
                 @csrf
-                <h4 class="display-6 text-center">Comments</h4><hr>
-                <label>Your Input :</label>
+                <h4 class="display-6 text-center">{{__('bet.comments')}}</h4><hr>
+                <label>{{__('bet.yoinput')}} :</label>
                 <textarea class="form-control" name="text" cols="20" rows="2"></textarea>
                 <input name="item_id" value="{{$item->id}}" type="hidden"><br>
-                <button class="btn btn-primary form-control" type="submit">Save</button>
+                <button class="btn btn-primary form-control" type="submit">{{__('bet.save')}}</button>
             </form>
             <br><br><hr>
             <div class="row">
@@ -94,9 +96,11 @@
                     @if($item->id == $comment->item_id)
                         {{$comment->created_at}} | {{$comment->user->name}}<h4>{{$comment->text}}</h4>
                 </div>
+
                 <div class="col-sm-2">
                         <div class=" d-flex" style="align: right;">
                             <div class="position-absolute top-0 start-100 translate-middle"></div>
+                            @can('update', $comment)
                             <a href="{{route('comments.edit', $comment)}}">
                                 <button class="btn btn-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
@@ -104,6 +108,8 @@
                                     </svg>
                                 </button>
                             </a><br>
+                            @endcan
+                            @can( 'delete', $comment)
                             <form action="{{route('comments.destroy', $comment)}}" method="post">
                                 @csrf
                                 @method('DELETE')
@@ -113,6 +119,7 @@
                                     </svg>
                                 </button><br>
                             </form>
+                            @endcan
                         </div>
 
                     @endif

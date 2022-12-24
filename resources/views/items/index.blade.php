@@ -14,11 +14,11 @@
                     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
                 </div>
                 <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src="https://www.keysound.co.uk/data1/images/carousel_shop2_1200x500px.png" class="d-block w-100" alt="...">
+                    <div class="carousel-item active" >
+                        <img src="https://cdn11.bigcommerce.com/s-ikl27/images/stencil/original/carousel/177/australian_made_guitar__09446.jpg?c=3" class="d-block w-100" alt="...">
                     </div>
                     <div class="carousel-item">
-                        <img src="https://cdn11.bigcommerce.com/s-ikl27/images/stencil/original/carousel/177/australian_made_guitar__09446.jpg?c=3" class="d-block w-100" alt="...">
+                        <img src="https://www.keysound.co.uk/data1/images/carousel_shop2_1200x500px.png" class="d-block w-100" alt="...">
                     </div>
                     <div class="carousel-item">
                         <img src="https://www.gearmusic.com/userimages/mainpage_gallery/player_plus.jpg" class="d-block w-100" style="height: auto" alt="...">
@@ -46,19 +46,20 @@
                 <div class="card">
                     <img src="{{asset($item->image)}}" class="card-img-top">
                     <div class="card-body">
-                        <h4 class="card-title fw-bold">{{$item->name}}</h4><hr>
+                        <h4 class="card-title fw
+                        -bold">{{$item->name}}</h4><hr>
                         <p class="card-text">{{$item->content}}</p>
                     <div class="d-grid gap-2 col-7 mx-auto d-flex">
                         @can('delete', $item)
                             <form action="{{route('items.destroy', $item->id)}}" method="post">
                                 @csrf
                                 @method('DELETE')
-                                <button class="btn btn-outline-danger" type="submit">DELETE</button>
+                                <button class="btn btn-outline-danger" type="submit">{{ __('bet.delete') }}</button>
                             </form>
                         @endcan
 
                         <a class="btn btn-primary" href="{{route('items.show', $item->id)}}">
-                            View
+                            {{ __('bet.view') }}
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                                 <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
                                 <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>

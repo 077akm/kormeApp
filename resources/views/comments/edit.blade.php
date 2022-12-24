@@ -13,10 +13,10 @@
                     @csrf
                     @method('PUT')
                     <div class="form-group">
-                        <label for="titleInput">Ваше Коментарий</label><br>
-                        <input type="text" class="form-control" id="titleInput" name="text" placeholder="Enter text" value="{{$comment->text}}">
+                        <label for="titleInput">{{__('bet.yoinput')}}</label><br>
+                        <input type="text" class="form-control" id="titleInput" name="text" value="{{$comment->text}}">
                         <div class="invalid-feedback"></div>
-                        <button class="btn btn-outline-secondary" type="submit">Изменить </button>
+                        <button class="btn btn-outline-secondary" type="submit">{{__('bet.edit')}} </button>
                     </div>
                 </form>
             </div>

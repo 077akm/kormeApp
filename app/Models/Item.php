@@ -28,7 +28,7 @@ class Item extends Model
         return $this->belongsTo(User::class);
     }
     public function usersRated(){
-        return $this->belongsToMany(User::class)
+        return $this->belongsToMany(User::class, 'item_user')
             ->withPivot('rating')
             ->withTimestamps();
     }
