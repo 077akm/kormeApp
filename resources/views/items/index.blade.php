@@ -3,87 +3,308 @@
 @section('title', 'INDEX PAGE')
 
 @section('content')
-    <div class="container-fluid d-flex">
+
+    <div class="d-flex" style="margin-top: 55px">
+        @isset($categories)
+        @foreach($categories as $cat)
+            <a class="list-group-item list-group-item-action" href="{{route('items.category', $cat->id)}}">
+        <div class="card1 mb-3" style="max-width: 540px; margin-left: 40px">
+            <div class="row g-0">
+                <div class="col-md-4" >
+                    <div class="circular--portrait"> <img src="{{asset('assets/images/category/'.$cat->id.'.jpg')}}" alt="{{ $cat->name }}" /> </div>
 
 
-        <div class="container">
-            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
-                <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
                 </div>
-                <div class="carousel-inner">
-                    <div class="carousel-item active" >
-                        <img src="https://cdn11.bigcommerce.com/s-ikl27/images/stencil/original/carousel/177/australian_made_guitar__09446.jpg?c=3" class="d-block w-100" alt="...">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="https://www.keysound.co.uk/data1/images/carousel_shop2_1200x500px.png" class="d-block w-100" alt="...">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="https://www.gearmusic.com/userimages/mainpage_gallery/player_plus.jpg" class="d-block w-100" style="height: auto" alt="...">
+                <div class="col-md-8">
+                    <div class="card-body" style="padding-top: 0px;padding-left: 50px; margin-top: 55px">
+                        <h5 class="card-title fw-bold">{{$cat->{'name_'.app()->getLocale()} }}</h5>
                     </div>
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
             </div>
+        </div>
+            </a>
+        @endforeach
+        @endisset
+    </div>
+
+    <div id="loader"></div>
+    <div id="container">
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col">
+
 
         </div>
-
-
-</div>
-<hr>
-    <div class="container" style="margin-top: 20px">
-        <div class="row row-cols-1 row-cols-md-3 g-3">
+        <div class="col">
             @foreach($items as $item)
-            <div class="col">
-                <div class="card">
-                    <img src="{{asset($item->image)}}" class="card-img-top">
-                    <div class="card-body">
-                        <h4 class="card-title fw
-                        -bold">{{$item->name}}</h4><hr>
-                        <p class="card-text">{{$item->content}}</p>
-                    <div class="d-grid gap-2 col-7 mx-auto d-flex">
-                        @can('delete', $item)
-                            <form action="{{route('items.destroy', $item->id)}}" method="post">
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-outline-danger" type="submit">{{ __('bet.delete') }}</button>
-                            </form>
-                        @endcan
+            <div class="window">
 
-                        <a class="btn btn-primary" href="{{route('items.show', $item->id)}}">
-                            {{ __('bet.view') }}
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
-                                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
-                            </svg>
-                        </a>
+                <img class="foto" src="{{asset($item->image)}}">
 
+
+                <div class="hover-zone">
+                    <div class="top-bar">
+                        <p>Profile ⌵</p>
+                        <a href="{{route('items.show', $item->id)}}">{{ __('bet.view') }}</a>
                     </div>
-
+                    <!-------------------->
+                    <div class="bottom-bar">
+                        <a>↗ {{$item->name}}</a>
+                        <div class="radius-ico">
+                            <img draggable="false" src="https://cdn3.iconfinder.com/data/icons/iconset-1-1/24/icon_set_outlinder-10-256.png">
+                            <img draggable="false" src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-more-256.png">
+                            {{--@can('delete', $item)
+                                <form action="{{route('items.destroy', $item->id)}}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-outline-danger" type="submit">{{ __('bet.delete') }}</button>
+                                </form>
+                            @endcan--}}
+                        </div>
                     </div>
-
                 </div>
             </div>
             @endforeach
-
-
         </div>
-
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
     </div>
 
+    <script>
+        let page = 1;
+        let fetching = false;
+        const container = document.getElementById('container');
+        const cols = Array.from(container.getElementsByClassName('col'));
+        console.log(cols)
+
+        const fetchImageData = async () => {
+            try {
+                fetching = true;
+                document.getElementById('loader').style.display = 'block';
+                const response = await fetch(`https://dog.ceo/api/breeds/image/random/30`);
+                const data = await response.json();
+                fetching = false;
+                return data.message;
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                fetching = false;
+                throw error;
+            }
+        };
+
+        fetchImageData().then((images) => {
+            if (images.length > 0) {
+                images.forEach((image, index) => {
+                    createCard(image, cols[index % cols.length]);
+
+                    console.log(index % cols.length)
+                });
+            }
+        }).catch((error) => {
+            console.error("Error initial fetch:", error);
+        });
+
+        const createCard = (image, col) => {
+            const card = document.createElement('div');
+            card.classList.add('card');
+            const img = document.createElement('img');
+            img.src = image;
+            img.alt = "Random Image";
+            img.style.width = "100%";
+            img.onerror = function () {
+                this.parentElement.style.display = "none";
+            };
+            img.onload = function () {
+                document.getElementById('loader').style.display = 'none';
+            };
+            card.appendChild(img);
+            col.appendChild(card);
+        };
+
+
+        const handleScroll = () => {
+            if (fetching) return;
+
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const windowHeight = window.innerHeight;
+            const bodyHeight = document.documentElement.scrollHeight;
+
+            if (bodyHeight - scrollTop - windowHeight < 800) {
+                page++;
+                fetchImageData().then((images) => {
+                    if (images.length > 0) {
+                        images.forEach((image, index) => {
+                            createCard(image, cols[index % cols.length]);
+                        });
+                    }
+                }).catch((error) => {
+                    console.error("Error handling scroll:", error);
+                });
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+    </script>
 
 
 
 
 
+
+
+<style>
+    .window{
+        border-radius:20px;
+
+        width:100%;
+
+        overflow:hidden;
+        position:relative;
+        z-index:97;
+    }
+    .window .foto{
+        width:100%;
+        border-radius:20px;
+        cursor:zoom-in;
+    }
+    .window .content{
+        margin-left:10px;
+        margin-top:-2px;
+        font-size:13px;
+        font-weight:bold;
+    }
+    .window .user{
+        width:40px;
+        border-radius:50%;
+        margin-top:-10px;
+        margin-left:10px;
+        cursor:pointer;
+    }
+    .window .username{
+        margin-top:-40px;
+        display:block;
+        margin-left:55px;
+        font-size:14px;
+        cursor:pointer;
+    }
+    .window .username:hover{
+        text-decoration:underline;
+    }
+
+    /*HOVER ZONE*/
+    .hover-zone{
+        position:absolute;
+        top:0px;
+        width:100%;
+        height:100%;
+        border-radius:20px;
+        cursor:zoom-in ;
+        display:flex;
+        align-content:space-between;
+        align-items:baseline;
+        justify-content:center;
+        flex-wrap:wrap;
+        background-color: rgba(000, 000, 0, 0.40);
+        user-select:none;
+    }
+    .hover-zone .top-bar{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        padding:5px 10px;
+        width:100%;
+        border-radius:20px;
+    }
+    .hover-zone .top-bar p{
+        color:white;
+        font-size:20px;
+        font-weight:bolder;
+        cursor:pointer;
+        display:inline-block;
+    }
+    .hover-zone .top-bar a{
+        color:white;
+        padding:15px 25px;
+        font-weight:bolder;
+        font-size:14px;
+        border-radius:40px;
+        cursor:pointer;
+        background:red;
+    }
+    .hover-zone .top-bar a:hover{
+        background:#b80202;
+    }
+    .hover-zone .bottom-bar{
+        padding:10px 10px;
+        width:100%;
+        border-radius:20px;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+    }
+    .hover-zone .bottom-bar a{
+        padding:5px 10px;
+        background:#efefef;
+        border-radius:40px;
+        cursor:pointer;
+        font-weight:bolder;
+    }
+    .hover-zone .bottom-bar a:hover{
+        background:white;
+    }
+    .hover-zone .bottom-bar img{
+        width:20px;
+        border-radius:50%;
+        background:#efefef;
+        padding:6px;
+        cursor:pointer;
+        margin:0px 2px;
+    }
+    .hover-zone .bottom-bar img:hover{
+        background:white;
+    }
+    .hover-zone{
+        opacity:0;
+    }
+    .window:hover .hover-zone{
+        opacity:1;
+    }
+    .card1:hover {
+        box-shadow: 0 0 10px #0af9d7,
+        0 0 1px #0af9d7,
+        0 0 5px #0af9d7,
+        0 0 20px #0af9d7,
+        0 0 70px #0af9d7;
+    }
+    .circular--portrait {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        overflow: hidden;
+        border-radius: 50%;
+        margin: 1em;
+    }
+    .circular--portrait img {
+        width: 100%;
+        height: auto;
+    }
+    .card1 {
+        width: 300px;
+        background-color: #ffffff;
+        border-radius: 100px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .card-title {
+        margin-top: 0;
+        margin-bottom: -20px;
+        font-size: 20px;
+        color: #333333;
+    }
+
+</style>
 
 
 

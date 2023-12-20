@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <div class="container d-flex">
+    <div class="container d-flex mt-5" >
         <div class="card-body">
             <h4 class="fw-bold mb-4">{{__('bet.korzina')}}</h4>
             @foreach($itemshop as $itemss)
@@ -41,7 +41,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col" style="padding-left: 33px">
+                        <div class="col" >
                             <form action="{{route('items.uncarting',$itemss->id)}}" method="post">
                                 @csrf
                                 <button class="btn btn-danger" type="submit">

@@ -9,7 +9,7 @@
                     <div class="card" style="border-radius: 1rem;">
                         <div class="row g-0">
                             <div class="col-md-6 col-lg-5 d-none d-md-block">
-                                <img src="https://e0.pxfuel.com/wallpapers/356/576/desktop-wallpaper-music-brown-guitar-musical-instrument-acoustic-guitar.jpg"
+                                <img src="{{asset('assets/images/bannerr.png')}}"
                                      alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
                             </div>
                             <div class="col-md-6 col-lg-7 d-flex align-items-center">
@@ -19,8 +19,8 @@
                                         @csrf
 
                                         <div class="d-flex align-items-center mb-3 pb-1">
-                                            <img src="https://www.bax-shop.co.uk/img/logo/logo.svg" style="width: 56px; height: 56px">
-                                            <span class="h1 fw-bold mb-0"> Tools Center</span>
+                                            <img src="https://i.pinimg.com/736x/0d/cf/b5/0dcfb548989afdf22afff75e2a46a508.jpg" style="width: 56px; height: 56px; border-radius: 50%; margin-right: 7px">
+                                            <span class="h1 fw-bold mb-0"> Korme | Portfolio</span>
                                         </div>
 
                                         <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">{{__('bet.login')}}</h5>
@@ -59,6 +59,7 @@
                                                     {{ __('Forgot Your Password?') }}
                                                 </a>
                                             @endif
+                                            <a href="{{ route('register.form') }}" style="margin-left: 5px" class="btn btn-outline-dark btn-lg btn-block">{{ __('bet.register') }}</a>
                                         </div>
 
                                     </form>
